@@ -1,0 +1,6 @@
+<ul>
+  <% @product.each do |name, value| %>
+    <li><%= name.titleize %>: <%= value %></li>
+  <% end %>
+</ul>
+<p><%= link_to "Back", root_path %></p>

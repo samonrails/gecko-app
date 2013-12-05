@@ -1,0 +1,4 @@
+require 'omniauth-tradegecko'
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :tradegecko, "d38abea2ef61c916a1e131de9fd04146579578f", "2kj2kd07e197f9942ca1876d759e9e9c45bdcdc"
+end

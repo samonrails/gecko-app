@@ -1,0 +1,19 @@
+<h1>Products List</h1>
+
+<% if current_user %>
+  <ul id="tasks">
+  <% @products.each do |product| %>
+    <li><%= link_to product["name"], product_path(product['id']) %></li>
+  <% end %>
+  </ul>
+
+  <p id="logged_in">
+    Logged in as <strong><%= current_user.name %></strong>.
+    <%= link_to "Sign Out", signout_path %>
+  </p>
+<% else %>
+  <p><strong>Currently not signed in.</strong></p>
+  <p>
+    <%= link_to "Sign in through TradeGecko", "/auth/tradegecko" %>
+  </p>
+<% end %>

@@ -1,0 +1,5 @@
+<ul>
+  <%= @variant["name"] %>
+  <%= link_to "Barcodes", barcode_path(@variant["upc"]) if @variant["upc"].present? %>
+</ul>
+<p><%= link_to "Back", root_path %></p>

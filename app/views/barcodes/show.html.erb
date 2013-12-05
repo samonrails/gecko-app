@@ -1,0 +1,26 @@
+<style type="text/css">
+  table.barby-barcode { border-spacing: 0; }
+  tr.barby-row {}
+  td.barby-cell { width: 2px; height: 100px; }
+  td.barby-cell.on { background: #000; }
+</style>
+
+<h3>HTML</h3>
+<%= raw @barcode.to_html %>
+
+<h3>ASCII</h3>
+<div style="width:590px;font-size:0.8em;font-weight:800">
+  <%= @barcode.to_ascii %>
+</div>
+
+<h3>PNG</h3>
+<%= image_tag barcode_path @barcode.data, format: :png %>
+
+<h3>SVG</h3>
+<%= raw @barcode.to_svg(xdim: 3) %>
+
+<h3>GIF</h3>
+<%= image_tag barcode_path @barcode.data, format: :gif %>
+
+<h3>JPG</h3>
+<%= image_tag barcode_path @barcode.data, format: :jpg %>
