@@ -22,10 +22,7 @@ private
   def access_token
     if session[:access_token]
       @access_token ||= begin
-        token = OAuth2::AccessToken.new(oauth_client, session[:access_token],
-                refresh_token: session[:refresh_token],
-                expires_at: session[:expires_at]
-        )
+        token = OAuth2::AccessToken.new(oauth_client, session[:access_token],refresh_token: session[:refresh_token],expires_at: session[:expires_at])
         AccessTokenWrapper::Base.new(token) do |new_token|
           set_session_from_access_token(new_token)
         end
@@ -41,8 +38,10 @@ private
   end
 
   def set_session_from_access_token(access_token)
-    session[:access_token]  = access_token.token
+    a_token = {:access_token => access_token.token, :refresh_token => access_token.refresh_token, :expires_at => access_token.expires_at}
+    File.open('tradegecko.yaml', 'w') {|f| YAML.dump(a_token, f)}
+    session[:access_token],   = access_token.token
     session[:refresh_token] = access_token.refresh_token
-    session[:expires_at]    = access_token.expires_at
+    session[:expires_at] = access_token.expires_at
   end
 end

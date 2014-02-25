@@ -45,5 +45,6 @@ gem 'rails_12factor'
 # gem 'ruby-debug19', require: 'ruby-debug'
 
 gem 'omniauth-tradegecko'
+gem "omniauth-trademe", :git => "git://github.com/eadz/omniauth-trademe.git"
 gem 'access_token_wrapper', github: 'tradegecko/access_token_wrapper'
-gem 'debugger'
+gem 'oauth2'

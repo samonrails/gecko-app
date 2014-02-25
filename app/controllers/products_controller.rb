@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
   def index
-    @products = access_token.get("/products").parsed["products"] if access_token
+    @products = access_token.get("/orders").parsed["orders"] if access_token
   end
 
   def show

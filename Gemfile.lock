@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/eadz/omniauth-trademe.git
+  revision: e1467fa7cf0ca233c957903af865e5a9dc80a5cd
+  specs:
+    omniauth-trademe (0.0.1)
+      omniauth-oauth (~> 1.0)
+
+GIT
   remote: git://github.com/tradegecko/access_token_wrapper.git
   revision: 61160d486d819bf2ec3ee4371673175321d7279c
   specs:
@@ -44,13 +51,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.6.3)
-    columnize (0.3.6)
-    debugger (1.6.3)
-      columnize (>= 0.3.1)
-      debugger-linecache (~> 1.2.0)
-      debugger-ruby_core_source (~> 1.2.4)
-    debugger-linecache (1.2.0)
-    debugger-ruby_core_source (1.2.4)
     dotenv (0.8.0)
     erubis (2.7.0)
     execjs (1.4.0)
@@ -78,6 +78,7 @@ GEM
     minitest (4.7.5)
     multi_json (1.7.8)
     multipart-post (1.2.0)
+    oauth (0.4.7)
     oauth2 (0.8.1)
       faraday (~> 0.8)
       httpauth (~> 0.1)
@@ -87,6 +88,9 @@ GEM
     omniauth (1.1.4)
       hashie (>= 1.2, < 3)
       rack
+    omniauth-oauth (1.0.1)
+      oauth
+      omniauth (~> 1.0)
     omniauth-oauth2 (1.1.1)
       oauth2 (~> 0.8.0)
       omniauth (~> 1.0)
@@ -162,10 +166,11 @@ DEPENDENCIES
   barby
   chunky_png
   coffee-rails
-  debugger
   foreman
   jquery-rails
+  oauth2
   omniauth-tradegecko
+  omniauth-trademe!
   pg
   pry
   rails
