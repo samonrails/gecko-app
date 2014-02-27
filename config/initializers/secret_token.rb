@@ -9,8 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-OauthClient::Application.config.secret_key_base = if Rails.env.development? or Rails.env.test?
-  ('X' * 128)
-else
-  ENV['SECRET_TOKEN']
-end
+Tmtootgk::Application.config.secret_key_base = '5eec2903f2b1f10bc0829fcfcd595636e267722ef886526f7e02b2afbbd9c957271f872d79b140f318cfb03557081a85e70534b50d631e18f7f7250cf156103e'
