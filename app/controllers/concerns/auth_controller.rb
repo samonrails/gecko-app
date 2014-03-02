@@ -38,8 +38,15 @@ private
   end
 
   def set_session_from_access_token(access_token)
-    a_token = current_user.build_tradegecko_cred(:access_token => access_token.token, :refresh_token => access_token.refresh_token, :expires_at => access_token.expires_at)
-    a_token.save
+    tg_creds = current_user.build_tradegecko_cred
+    if tg_creds
+      tg_creds.access_token = access_token.token
+      tg_creds.refresh_token = access_token.refresh_token
+      tg_creds.expires_at = access_token.expires_at
+    else
+      tg_creds = current_user.build_tradegecko_cred(:access_token => access_token.token, :refresh_token => access_token.refresh_token, :expires_at => access_token.expires_at)
+    end
+    tg_creds.save
     session[:access_token],   = access_token.token
     session[:refresh_token] = access_token.refresh_token
     session[:expires_at] = access_token.expires_at
