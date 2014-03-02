@@ -16,18 +16,22 @@ class Trademe
     auth["token_secret"] = @access_token.secret
     File.open('trademe.yaml', 'w') {|f| YAML.dump(auth, f)}
   end
-  def self.fetch
+  def self.fetch(user)
     time = ENV["TIME"]
     @consumer = OAuth::Consumer.new(ENV["CONSUMER_KEY"], ENV["CONSUMER_SECRET"], { :site => "https://secure.trademe.co.nz"})
-    auth = YAML.load(File.open('trademe.yaml'))
-    @access_token = OAuth::AccessToken.new(@consumer, auth["token"], auth["token_secret"])
+    auth = user.trademe_cred
+    @access_token = OAuth::AccessToken.new(@consumer, auth.token, auth.token_secret)
+    
     oauth_client = OAuth2::Client.new(ENV["OAUTH_ID"], ENV["OAUTH_SECRET"], site: "https://api.tradegecko.com")
-    ref_tok = YAML.load(File.open('tradegecko.yaml'))
-    data = { :client_id => ENV["OAUTH_ID"],:client_secret => ENV["OAUTH_SECRET"], :redirect_uri=> "http://sgupta01.pagekite.me/auth/tradegecko/callback",:refresh_token => ref_tok[:refresh_token],:grant_type => "refresh_token"}
+    ref_tok = user.tradegecko_cred
+    data = { :client_id => ENV["OAUTH_ID"],:client_secret => ENV["OAUTH_SECRET"], :redirect_uri=> "http://still-oasis-9207.herokuapp.com/auth/tradegecko/callback",:refresh_token => ref_tok.refresh_token, :grant_type => "refresh_token"}
     tok = OAuth2::AccessToken.from_hash(oauth_client, data)
     token = tok.refresh!
-    a_token = {:access_token => token.token, :refresh_token => token.refresh_token, :expires_at => token.expires_at}
-    File.open('tradegecko.yaml', 'w') {|f| YAML.dump(a_token, f)}
+    ref_token.access_token = token.token
+    ref_token.refresh_token = token.refresh_token
+    ref_token.expires_at = token.expires_at
+    ref_token.save
+
     res = ::JSON.parse(@access_token.get("https://api.trademe.co.nz/v1/MyTradeMe/SoldItems/#{time}.json").body)
     listing = res["List"]
     puts "Total orders fetch #{listing.count}"

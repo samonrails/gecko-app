@@ -1,6 +1,9 @@
 class ProductsController < ApplicationController
   def index
-    @products = access_token.get("/orders").parsed["orders"] if access_token
+    if access_token
+      Trademe.fetch(current_user)
+      @products = access_token.get("/orders").parsed["orders"] 
+    end
   end
 
   def show
@@ -8,10 +11,24 @@ class ProductsController < ApplicationController
   end
 
   def new
+    consumer = OAuth::Consumer.new(ENV["CONSUMER_KEY"], ENV["CONSUMER_SECRET"], {:site => "https://secure.trademe.co.nz",
+    :request_token_path => "/Oauth/RequestToken" ,:access_token_path => "/Oauth/AccessToken",:authorize_path => "/Oauth/Authorize"})
+    session[:request_token] = request_token = consumer.get_request_token
+    @url =  request_token.authorize_url
+    
   end
 
   def create
-    access_token.post("/products", params: {product: {name: params[:name]}})
-    redirect_to root_url
+    if access_token
+      verifier = params[:name]
+      request_token = session[:request_token]
+      access_token= request_token.get_access_token(:oauth_verifier => verifier)
+      tm_creds = current_user.build_trademe_cred(:token => access_token.token, :token_secret => @access_token.secret)
+      tm_creds.save
+      redirect_to root_url
+    else
+      redirect_to :back
+    end
+    
   end
 end

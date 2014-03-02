@@ -1,4 +1,7 @@
+<p><%= @url %></p>
+<p>Visit the following URL, log in if you need to, and authorize the app</p>
+<p>When you've authorized that token, enter the verifier code you are assigned in the text field below</p>
 <%= form_tag products_path do %>
   <%= text_field_tag :name %>
-  <%= submit_tag "Add" %>
+  <%= submit_tag "Submit" %>
 <% end %>
