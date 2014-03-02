@@ -27,10 +27,10 @@ class Trademe
     data = { :client_id => ENV["OAUTH_ID"],:client_secret => ENV["OAUTH_SECRET"], :redirect_uri=> "http://still-oasis-9207.herokuapp.com/auth/tradegecko/callback",:refresh_token => ref_tok.refresh_token, :grant_type => "refresh_token"}
     tok = OAuth2::AccessToken.from_hash(oauth_client, data)
     token = tok.refresh!
-    ref_token.access_token = token.token
-    ref_token.refresh_token = token.refresh_token
-    ref_token.expires_at = token.expires_at
-    ref_token.save
+    ref_tok.access_token = token.token
+    ref_tok.refresh_token = token.refresh_token
+    ref_tok.expires_at = token.expires_at
+    ref_tok.save
 
     res = ::JSON.parse(@access_token.get("https://api.trademe.co.nz/v1/MyTradeMe/SoldItems/#{time}.json").body)
     listing = res["List"]
