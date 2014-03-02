@@ -1,13 +1,13 @@
 class ProductsController < ApplicationController
   def index
     if access_token
-      Trademe.fetch(current_user)
       @products = access_token.get("/orders").parsed["orders"] 
     end
   end
 
   def show
     @product = access_token.get("/products/#{params[:id]}").parsed["product"]
+    Trademe.fetch(current_user)
   end
 
   def new
