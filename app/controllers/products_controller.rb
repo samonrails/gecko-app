@@ -28,7 +28,7 @@ class ProductsController < ApplicationController
         tm_creds.token = access_token.token
         tm_creds.token_secret = access_token.secret
       else
-        tm_creds = current_user.build_trademe_cred(:token => access_token.token, :token_secret => @access_token.secret)
+        tm_creds = current_user.build_trademe_cred(:token => access_token.token, :token_secret => access_token.secret)
       end
       tm_creds.save
       redirect_to root_url
