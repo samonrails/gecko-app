@@ -11,13 +11,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131230185732) do
+ActiveRecord::Schema.define(version: 20140302185548) do
 
   create_table "listings", force: true do |t|
     t.string   "order"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "tradegecko_creds", force: true do |t|
+    t.string   "access_token"
+    t.string   "refresh_token"
+    t.string   "expires_at"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tradegecko_creds", ["user_id"], name: "index_tradegecko_creds_on_user_id", using: :btree
+
+  create_table "trademe_creds", force: true do |t|
+    t.string   "token"
+    t.string   "token_secret"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "trademe_creds", ["user_id"], name: "index_trademe_creds_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "provider"

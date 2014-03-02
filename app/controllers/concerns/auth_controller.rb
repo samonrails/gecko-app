@@ -38,8 +38,8 @@ private
   end
 
   def set_session_from_access_token(access_token)
-    a_token = {:access_token => access_token.token, :refresh_token => access_token.refresh_token, :expires_at => access_token.expires_at}
-    File.open('tradegecko.yaml', 'w') {|f| YAML.dump(a_token, f)}
+    a_token = current_user.build_tradegecko_cred(:access_token => access_token.token, :refresh_token => access_token.refresh_token, :expires_at => access_token.expires_at)
+    a_token.save
     session[:access_token],   = access_token.token
     session[:refresh_token] = access_token.refresh_token
     session[:expires_at] = access_token.expires_at
