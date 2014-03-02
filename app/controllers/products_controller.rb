@@ -1,13 +1,10 @@
 class ProductsController < ApplicationController
   def index
-    if access_token
-      @products = access_token.get("/orders").parsed["orders"] 
-    end
+    @products = access_token.get("/orders").parsed["orders"] if access_token
   end
 
   def show
-    @product = access_token.get("/products/#{params[:id]}").parsed["product"]
-    Trademe.fetch(current_user)
+    Trademe.fetch(current_user) if access_token
   end
 
   def new
@@ -15,7 +12,6 @@ class ProductsController < ApplicationController
     :request_token_path => "/Oauth/RequestToken" ,:access_token_path => "/Oauth/AccessToken",:authorize_path => "/Oauth/Authorize"})
     session[:request_token] = request_token = consumer.get_request_token
     @url =  request_token.authorize_url
-    
   end
 
   def create
@@ -35,6 +31,6 @@ class ProductsController < ApplicationController
     else
       redirect_to :back
     end
-    
   end
+
 end
