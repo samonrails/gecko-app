@@ -45,7 +45,7 @@ class Trademe
         order = token.post('/orders', params: { order:{:shipping_address_id => address_id, :company_id => ENV["COMPANY_ID"],
                 :email => list["Buyer"]["Email"], :order_number =>list["ReferenceNumber"], :issued_at => Time.now,
                 :phone_number => list["DeliveryAddress"]["PhoneNumber"], :due_at =>Time.now, :issued_at => Time.now,
-                }})
+                :billing_address_id =>address_id}})
       end
     end
   end

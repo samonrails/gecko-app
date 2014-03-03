@@ -38,7 +38,7 @@ private
   end
 
   def set_session_from_access_token(access_token)
-    tg_creds = current_user.build_tradegecko_cred
+    tg_creds = current_user.tradegecko_cred
     if tg_creds
       tg_creds.access_token = access_token.token
       tg_creds.refresh_token = access_token.refresh_token
