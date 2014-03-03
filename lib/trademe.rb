@@ -35,6 +35,7 @@ class Trademe
     res = ::JSON.parse(@access_token.get("https://api.trademe.co.nz/v1/MyTradeMe/SoldItems/#{time}.json").body)
     listing = res["List"]
     puts "Total orders fetch #{listing.count}"
+    puts listing
     listing.each do |list|
       listing = Listing.new(:order => list["ListingId"])
       if listing.save
