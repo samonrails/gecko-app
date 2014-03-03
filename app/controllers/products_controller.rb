@@ -5,6 +5,7 @@ class ProductsController < ApplicationController
 
   def show
     Trademe.fetch(current_user) if access_token
+    @product = {} 
   end
 
   def new
