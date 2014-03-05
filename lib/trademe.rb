@@ -38,16 +38,18 @@ class Trademe
     puts listing
     listing.each do |list|
       listing = Listing.new(:order => list["ListingId"])
-      if listing.save
-        address = token.post("/addresses", params: {address: {:address1 => list["DeliveryAddress"]["Address1"], :address2 => list["DeliveryAddress"]["Address2"],
-        :city => list["DeliveryAddress"]["City"], :country => list["DeliveryAddress"]["Country"], :suburb => list["DeliveryAddress"]["Suburb"],
-        :zip_code => list["DeliveryAddress"]["Postcode"], :phone_number => list["DeliveryAddress"]["PhoneNumber"], :company_id => ENV["COMPANY_ID"], :label => "Shipping"}})
-        address_id =  ::JSON.parse(address.body)['address']['id']
-        order = token.post('/orders', params: { order:{:shipping_address_id => address_id, :company_id => ENV["COMPANY_ID"],
-                :email => list["Buyer"]["Email"], :order_number =>list["ReferenceNumber"], :issued_at => Time.now,
-                :phone_number => list["DeliveryAddress"]["PhoneNumber"], :due_at =>Time.now, :issued_at => Time.now,
-                :billing_address_id =>address_id}})
-      end
+      #if listing.save
+        users = token.get("/companies.json").body
+        puts users
+        # address = token.post("/addresses", params: {address: {:address1 => list["DeliveryAddress"]["Address1"], :address2 => list["DeliveryAddress"]["Address2"],
+        # :city => list["DeliveryAddress"]["City"], :country => list["DeliveryAddress"]["Country"], :suburb => list["DeliveryAddress"]["Suburb"],
+        # :zip_code => list["DeliveryAddress"]["Postcode"], :phone_number => list["DeliveryAddress"]["PhoneNumber"], :company_id => ENV["COMPANY_ID"], :label => "Shipping"}})
+        # address_id =  ::JSON.parse(address.body)['address']['id']
+        # order = token.post('/orders', params: { order:{:shipping_address_id => address_id, :company_id => ENV["COMPANY_ID"],
+                # :email => list["Buyer"]["Email"], :order_number =>list["ReferenceNumber"], :issued_at => Time.now,
+                # :phone_number => list["DeliveryAddress"]["PhoneNumber"], :due_at =>Time.now, :issued_at => Time.now,
+                # :billing_address_id =>address_id}})
+      # end
     end
   end
 end
