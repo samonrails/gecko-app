@@ -40,8 +40,9 @@ class Trademe
       listing = Listing.new(:order => list["ListingId"])
       #if listing.save
         users = ::JSON.parse(token.get("/companies.json").body)['companies']
+        logger.warn(users)
         users.each do |user|
-          Company.create(:name => user['name'], :email => user[:email], :type => user[:company_type], :ref_id => user['id'])
+          Company.create!(:name => user['name'], :email => user['email'], :type => user['company_type'], :ref_id => user['id'])
         end
         # address = token.post("/addresses", params: {address: {:address1 => list["DeliveryAddress"]["Address1"], :address2 => list["DeliveryAddress"]["Address2"],
         # :city => list["DeliveryAddress"]["City"], :country => list["DeliveryAddress"]["Country"], :suburb => list["DeliveryAddress"]["Suburb"],
