@@ -38,7 +38,7 @@ class Trademe
     puts listing
         users = ::JSON.parse(token.get("/companies.json").body)['companies']
         users.each do |user|
-          Company.create!(:name => user['name'], :email => user['email'], :type => user['company_type'], :ref_id => user['id'])
+          Company.create!(:name => user['name'], :email => user['email'], :company_type => user['company_type'], :ref_id => user['id'])
         end
     listing.each do |list|
       listing = Listing.new(:order => list["ListingId"])
