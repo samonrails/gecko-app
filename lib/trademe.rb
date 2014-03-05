@@ -37,7 +37,6 @@ class Trademe
     puts "Total orders fetch #{listing.count}"
     puts listing
         users = ::JSON.parse(token.get("/companies.json").body)['companies']
-        logger.warn(users)
         users.each do |user|
           Company.create!(:name => user['name'], :email => user['email'], :type => user['company_type'], :ref_id => user['id'])
         end
