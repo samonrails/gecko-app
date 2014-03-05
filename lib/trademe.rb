@@ -36,22 +36,29 @@ class Trademe
     listing = res["List"]
     puts "Total orders fetch #{listing.count}"
     puts listing
-        users = ::JSON.parse(token.get("/companies.json").body)['companies']
-        users.each do |user|
-          Company.create!(:name => user['name'], :email => user['email'], :company_type => user['company_type'], :ref_id => user['id'])
-        end
     listing.each do |list|
       listing = Listing.new(:order => list["ListingId"])
-      #if listing.save
-        # address = token.post("/addresses", params: {address: {:address1 => list["DeliveryAddress"]["Address1"], :address2 => list["DeliveryAddress"]["Address2"],
-        # :city => list["DeliveryAddress"]["City"], :country => list["DeliveryAddress"]["Country"], :suburb => list["DeliveryAddress"]["Suburb"],
-        # :zip_code => list["DeliveryAddress"]["Postcode"], :phone_number => list["DeliveryAddress"]["PhoneNumber"], :company_id => ENV["COMPANY_ID"], :label => "Shipping"}})
-        # address_id =  ::JSON.parse(address.body)['address']['id']
-        # order = token.post('/orders', params: { order:{:shipping_address_id => address_id, :company_id => ENV["COMPANY_ID"],
-                # :email => list["Buyer"]["Email"], :order_number =>list["ReferenceNumber"], :issued_at => Time.now,
-                # :phone_number => list["DeliveryAddress"]["PhoneNumber"], :due_at =>Time.now, :issued_at => Time.now,
-                # :billing_address_id =>address_id}})
-      # end
+#       users = ::JSON.parse(token.get("/companies.json").body)['companies']
+#        users.each do |user|
+#          Company.create!(:name => user['name'], :email => user['email'], :company_type => user['company_type'], :ref_id => user['id'])
+#        end
+      if listing.save
+        address = token.post("/addresses", params: {address: {:address1 => list["DeliveryAddress"]["Address1"], :address2 => list["DeliveryAddress"]["Address2"],
+        :city => list["DeliveryAddress"]["City"], :country => list["DeliveryAddress"]["Country"], :suburb => list["DeliveryAddress"]["Suburb"],
+        :zip_code => list["DeliveryAddress"]["Postcode"], :phone_number => list["DeliveryAddress"]["PhoneNumber"], :company_id => ENV["COMPANY_ID"], :label => "Shipping"}})
+        address_id =  ::JSON.parse(address.body)['address']['id']
+        company = Company.where("name = ? AND email = ? AND company_type = ?",list["DeliveryAddress"]["Name"], list["Buyer"]["Email"], "consumer").first
+        if company.nil?
+          user = ::JSON.parse(token.post('/companies', params: { order:{name: list["DeliveryAddress"]["Name"],
+          company_type: "consumer", email: list["Buyer"]["Email"]}}).body)['company']
+          Company.create(name: user["name"], email: user["email"], company_type: "consumer", ref_id: user["id"] )
+        else
+        end
+        order = token.post('/orders', params: { order:{:shipping_address_id => address_id, :company_id => ENV["COMPANY_ID"],
+                :email => list["Buyer"]["Email"], :order_number =>list["ReferenceNumber"], :issued_at => Time.now,
+                :phone_number => list["DeliveryAddress"]["PhoneNumber"], :due_at =>Time.now, :issued_at => Time.now,
+                :billing_address_id =>address_id}})
+      end
     end
   end
 end
